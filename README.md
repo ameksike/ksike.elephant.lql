@@ -28,7 +28,7 @@ generarador de consultas independiente de la capa de acceso a datos, orientado a
 	 * */
 	LQL::setting(null, new ProcessorSQL);
 	/*
-	 * Creando una seleccion simple y obtener el sql
+	 * Creando una selección simple y obtener el sql
 	 * */
 	$sql = LQL::create()
 		->select('count(j.action) as data1, s.denomination as name')
@@ -37,7 +37,7 @@ generarador de consultas independiente de la capa de acceso a datos, orientado a
 	;
 	show($sql);
 	/*
-	 * Creando una seleccion simple y obtener el sql
+	 * Creando una selección simple y obtener el sql
 	 * */
 	$sql = LQL::create()
 		->select('t.nombre as mio, t.edad as era')
@@ -69,11 +69,10 @@ generarador de consultas independiente de la capa de acceso a datos, orientado a
 		else print_r($obj);
 		echo "</pre>";
 	}
-	
-	//////////////////////////////////////////////////////////////////////////////////////////
-	
-	<b> LQL + Secretary = OK </b>
-	
+```
+	<b> ************************************************************ </b> 
+	<h3> LQL + Secretary = OK </h3>
+```php
 	/*
 	 * Ejemplo de utilización, equivalente a: LQL sobre Secretary
 	 * */
@@ -81,21 +80,26 @@ generarador de consultas independiente de la capa de acceso a datos, orientado a
 	//... paso 1: incluir el Loader y las funciones utilies (cfg|show)
 	include "lib/loader/Main.php";
 	include "lib/utils.php";
+	
 	//... paso 2: los espacios de nombres a utilizar
 	use Loader\Main as Loader;
 	use LQL\src\LQLS as LQLS;
+	
 	//... paso 3: configurar el Loader especificandole las direcciones de las dependencias
 	Loader::active(array(
 		'Secretary'=>'lib/secretary',
 		'LQL'=>'lib/lql'
 	));
 	//... paso 4: cargar las variables de configuracion
-	$config = cfg();
+	$config["db"]["host"]		= "localhost";		    //... servidor o proveedor de bases de datos
+	$config["db"]["user"]		= "postgres";		    //... usuario de una cuenta activa en el servidor de bases de datos
+	$config["db"]["pass"]		= "postgres";			//... contraseña requerida para la cuenta activa en el servidor de bases de datos
+	$config["db"]["name"]		= "mydb";		        //... nombre de la base de datos a la cual debe conectarse
+    $config["db"]["driver"]		= "pgsql";				//... pgsql|mysql|sqlite|sqlsrv|mysqli
 
 	//... paso 5: comenzar a utilizar el LQLS
-
 	/*
-	 * Creando una seleccion simple y obtener el sql
+	 * Creando una selección simple y obtener el sql
 	 * */
 	$sql = LQLS::create($config['db'])
 		->select('name as nombre, age as edad, serverid')
@@ -104,7 +108,7 @@ generarador de consultas independiente de la capa de acceso a datos, orientado a
 	;
 	show($sql);
 	/*
-	 * Creando una seleccion simple y obtener el resultado
+	 * Creando una selección simple y obtener el resultado
 	 * */
 	$sql = LQLS::create($config['db'])
 		->select('name as nombre, age as edad, serverid')
@@ -112,7 +116,7 @@ generarador de consultas independiente de la capa de acceso a datos, orientado a
 		->execute()
 	;
 	/*
-	 * Creando una seleccion compuesta sobre la tabla person
+	 * Creando una selección compuesta sobre la tabla person
 	 * */
 	$sql = LQLS::create($config['db'])
 		->select('t.nombre as mio, t.edad as era')
@@ -269,4 +273,4 @@ generarador de consultas independiente de la capa de acceso a datos, orientado a
 		->compile()
 	;
 	show($sql);
-	
+```
