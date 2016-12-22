@@ -1,0 +1,16 @@
+{
+  "author": {
+    "name": "Antonio Membrides Espinosa"
+  },
+  "dev_dependencies": {
+	"php": "^5.3.27"
+  },
+  "description": "Light Query Language for PHP, Simplifies query creation by abstracting SQL language.",
+  "main": "src/Main.php",
+  "license": "GPL",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ameksike/lql-elephant.git"
+  },
+}
