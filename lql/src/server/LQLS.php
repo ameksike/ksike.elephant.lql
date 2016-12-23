@@ -1,16 +1,16 @@
 <?php
 /**
  * @author		Antonio Membrides Espinosa
- * @package    	model
+ * @package    	executor
  * @date		20/07/2015
- * @copyright  	Copyright (c) 2015-2015 XETID
- * @license    	XETID
+ * @copyright  	Copyright (c) 2015-2015
+ * @license    	GPL
  * @version    	1.0
  */
-namespace LQLS\src;
-use LQL\src\Main as LQL;
-use LQL\src\processor\SQL as Processor;
-use LQL\src\executor\Secretary as Executor;
+namespace Ksike\lql\src\server;
+use Ksike\lql\src\server\Main as LQL;
+use Ksike\lql\src\server\processor\SQL as Processor;
+use Ksike\lql\src\server\executor\Secretary as Executor;
 	
 class LQLS extends LQL
 {

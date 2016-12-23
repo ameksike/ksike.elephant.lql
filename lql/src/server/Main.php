@@ -8,7 +8,7 @@
  * @version    	1.0
  * @require		SQLDriver
  */
-namespace LQL\src;
+namespace Ksike\lql\src\server;
 class Main
 {
 	public $executor;

@@ -1,15 +1,15 @@
 <?php
 /**
  * @author		Antonio Membrides Espinosa
- * @package    	model
+ * @package    	executor
  * @date		20/07/2015
- * @copyright  	Copyright (c) 2015-2015 XETID
- * @license    	XETID
+ * @copyright  	Copyright (c) 2015-2015
+ * @license    	GPL
  * @version    	1.0
  */
-namespace LQLS\src\executor;
-use LQL\src\Executor as Executor;
-use Secretary\src\server\Main as DBManager;
+namespace Ksike\lql\src\server\executor;
+use Ksike\lql\src\server\Executor as Executor;
+use Ksike\secretary\src\server\Main as DBManager;
 
 class Secretary extends Executor
 {

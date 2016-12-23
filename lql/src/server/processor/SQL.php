@@ -2,14 +2,14 @@
 /**
  * @description LQL it's alternative LQL Processor suport for SQL
  * @author		Antonio Membrides Espinosa
- * @package    	model
+ * @package    	processor
  * @date		15/05/2013
  * @license    	GPL
  * @version    	1.0
  * @require		SQLDriver
  */
-namespace LQL\src\processor;
-class SQL extends \LQL\src\Processor
+namespace Ksike\lql\src\server\processor;
+class SQL extends \Ksike\lql\src\server\Processor
 {
 	public function __construct($jobs=false){
 		$this->jobs = $jobs ? $jobs : array(
@@ -63,7 +63,7 @@ class SQL extends \LQL\src\Processor
         }
 	}
 	protected function evaluate($value, $quote=false){
-		return is_a($value, 'LQL\src\Main') ? "(" . $value->compile() . ")" : $this->evaltype($value, $quote);
+		return is_a($value, 'Ksike\lql\src\server\Main') ? "(" . $value->compile() . ")" : $this->evaltype($value, $quote);
 	}
 	protected function compare($data){
 		$count = count($data);
@@ -79,7 +79,7 @@ class SQL extends \LQL\src\Processor
 			case "ADD": return is_object($value[0]) ? $value[0]->compile()."; " : (is_string($value[0]) ? $value[0] : ' ') ; break;
 			case "ADDSELECT": 	
 				$name = is_string($value[1]) ? $value[1] : 'tmp';
-				$alias = is_a($value[0], 'LQL\src\Main') ? " AS $name " : (is_string($value[1]) ? " AS $name " : '');
+				$alias = is_a($value[0], 'Ksike\lql\src\server\Main') ? " AS $name " : (is_string($value[1]) ? " AS $name " : '');
 				return ", ".$this->evaluate($value[0]).$alias; 
 			break;
 			case "ANDWHERE": 
@@ -139,7 +139,7 @@ class SQL extends \LQL\src\Processor
 			break;
             case "FROM":
                 $alias = (isset($value[1]) and is_string($value[1])) ? " AS ".$value[1] : '';
-                $alias = is_a($value[0], 'LQL\src\Main') ? (!empty($alias) ? $alias : " AS tmp ") : $alias;
+                $alias = is_a($value[0], 'Ksike\lql\src\server\Main') ? (!empty($alias) ? $alias : " AS tmp ") : $alias;
                 
                 return " FROM ".$this->evaluate($value[0]).$alias;
             break;
