@@ -97,8 +97,9 @@
 		->add(LQL::create()
 			->update('user')
 			->set(['name', 'age'], ['LAST', 45])
-			->where(TRUE)
 			->whereIn('name', ['Mastik TTTT', 'Mastik MMM'])
 		)
 		->flush()
 	;
+	
+	file_put_contents(__DIR__."\log.txt", $sql);

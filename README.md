@@ -1,5 +1,5 @@
 # lql-elephant
-generarador de consultas independiente de la capa de acceso a datos, orientado al lenguage PHP
+generarador de consultas independiente de la capa de acceso a datos, su distribución Elephant esta orientada al lenguage PHP
 
 ```php
 
@@ -8,19 +8,22 @@ generarador de consultas independiente de la capa de acceso a datos, orientado a
 	 * */
 	 
 	//... paso 1: incluir el Loader y las funciones utilies (cfg|show)
-	include "lib/loader/Main.php";
+	include __DIR__ . "/lib/carrier/src/Main.php";
 	include "lib/utils.php";
 	
-	//... paso 2: los espacios de nombres a utilizar
-	use Loader\Main as Loader;
-	use LQL\src\Main as LQL;
-	use LQL\src\processor\SQL as ProcessorSQL;
+	//... paso 2: configurar el Loader especificandole las direcciones de las dependencias
+	Carrier::active(array( 'Ksike'=> __DIR__ .'/../' ));
 	
-	//... paso 3: configurar el Loader especificandole las direcciones de las dependencias
-	Loader::active(array('LQL'=>'lib/lql'));
+	//... paso 3: los espacios de nombres a utilizar
+	use Ksike\lql\src\server\Main as LQL;
+	use Ksike\lql\lib\processor\sql\src\Main as ProcessorSQL;
 	
 	//... paso 4: cargar las variables de configuracion 
-	$config = cfg();
+	$config['db']["log"]		= "log/";
+    $config['db']["driver"]	 	= "sqlite";				//... valores admitidos: pgsql|mysql|mysqli|sqlite|sqlsrv
+	$config['db']["name"]		= "ploy";		        //... nombre de la base de datos a la cual debe conectarse
+	$config['db']["path"]		= __DIR__ . "/data/";	//... ruta donde se encuentra la base de datos
+	$config['db']["extension"]  = "db";					//... default value db
 
 	//... paso 5: comenzar a utilizar el LQL
 	/*

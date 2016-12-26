@@ -17,7 +17,7 @@ class Main extends \Ksike\lql\src\server\Processor
 				array('select', 'addSelect', 'delete', 'update', 'insert', 'drop', 'alter', 'create'),
                 array('from', 'set', 'ownerTo'),
 				array("leftJoin", "innerJoin", "rightJoin"),
-				array("where", "andWhere", "orWhere", "addWhere"),
+				array("where", "andWhere", "orWhere", "addWhereIn", "whereIn"),
 				array("groupBy", "having", "orderBy", "limit", "offset")
 		);
 	}
@@ -87,13 +87,21 @@ class Main extends \Ksike\lql\src\server\Processor
 			case "ORWHERE": return " OR ". $this->compare($value); break;
 			case "DELETE": return " DELETE FROM ". $this->evaluate($value[0]); break;
 			case "WHERE": return " WHERE ". $this->compare($value); break;
-            case "WHEREIN":
+			case "ANDWHEREIN": 
                 $list = '';
                 foreach($value[1] as $i){
                     $pre = !empty($list) ? ', ' : '';
                     $list .=  $pre . $this->evaluate($i, true);
                 }
                 return " AND ".  $this->evaluate($value[0])  . ' IN (' . $list . ' )';
+            break;
+            case "WHEREIN":
+                $list = '';
+                foreach($value[1] as $i){
+                    $pre = !empty($list) ? ', ' : '';
+                    $list .=  $pre . $this->evaluate($i, true);
+                }
+                return " WHERE ". $this->evaluate($value[0])  . ' IN (' . $list . ' )';
             break;
 			case "DROP": 	return " DROP TABLE ".$this->evaluate($value[0]); break;
 			case "ALTER": 	return " ALTER TABLE ".$this->evaluate($value[0]); break;
