@@ -9,7 +9,7 @@
 	
 	//... paso 2: definir los espacios de nombres a utilizar
 	use Ksike\lql\src\server\Main as LQL;
-	use Ksike\lql\src\server\processor\SQL as ProcessorSQL;
+	use Ksike\lql\lib\processor\sql\src\Main as ProcessorSQL;
 		
 	//... paso 3: comenzar a utilizar el LQL
 	/*

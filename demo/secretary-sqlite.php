@@ -8,7 +8,7 @@
 	Carrier::active(array( 'Ksike'=> __DIR__ .'/../' ));
 	
 	//... paso 2: definir los espacios de nombres a utilizar
-	use Ksike\lql\src\server\LQLS as LQL;
+	use Ksike\lql\lib\customise\lqls\src\Main as LQL;
 	
 	//... paso 3: cargar las variables de configuracion 
 	$config['db']["log"]		= "log/";

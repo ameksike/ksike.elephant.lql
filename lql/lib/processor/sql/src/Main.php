@@ -8,8 +8,8 @@
  * @version    	1.0
  * @require		SQLDriver
  */
-namespace Ksike\lql\src\server\processor;
-class SQL extends \Ksike\lql\src\server\Processor
+namespace Ksike\lql\lib\processor\sql\src;
+class Main extends \Ksike\lql\src\server\Processor
 {
 	public function __construct($jobs=false){
 		$this->jobs = $jobs ? $jobs : array(

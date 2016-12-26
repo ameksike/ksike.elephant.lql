@@ -7,13 +7,13 @@
  * @license    	GPL
  * @version    	1.0
  */
-namespace Ksike\lql\src\server\executor;
+namespace Ksike\lql\lib\executor\secretary\src;
 use Ksike\lql\src\server\Executor as Executor;
 use Ksike\secretary\src\server\Main as DBManager;
 
-class Secretary extends Executor
+class Main extends Executor
 {
-	public function __construct($cfg='mysql'){
+	public function __construct($cfg='sqlite'){
 		$this->driver = new DBManager($cfg);
 	}
 	

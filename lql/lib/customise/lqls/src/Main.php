@@ -7,12 +7,12 @@
  * @license    	GPL
  * @version    	1.0
  */
-namespace Ksike\lql\src\server;
+namespace Ksike\lql\lib\customise\lqls\src;
 use Ksike\lql\src\server\Main as LQL;
-use Ksike\lql\src\server\processor\SQL as Processor;
-use Ksike\lql\src\server\executor\Secretary as Executor;
-	
-class LQLS extends LQL
+use Ksike\lql\lib\processor\sql\src\Main as Processor;
+use Ksike\lql\lib\executor\secretary\src\Main as Executor;
+
+class Main extends LQL
 {
 	protected static $cfgexecutor = 'mysql';
 	protected static $cfgprocessor = false;
