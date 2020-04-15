@@ -1,47 +1,58 @@
-# lql-elephant
-generarador de consultas independiente de la capa de acceso a datos, su distribución Elephant esta orientada al lenguage PHP
+# LQL Elephant
+LQL also know as Light Query Language it is a query generator independent of data access layer, it belong  Ksike Framework Elephant distribution, oriented to the PHP programing language. Note that in general a query languages or data query languages (DQLs) are computer languages used to make queries in databases and information systems. 
+
+
+## LQL consists of three fundamental concepts, which are listed below:
++ Executor: Relates the execute part that establishes the persistence of the data and defines how it is accessed. Due to the proposed plugin architecture, as many executors can be defined as necessary, by default one is defined using the Secretary library. [for more information about Secretary library access this link](https://github.com/ameksike/ksike.elephant.secretary) 
+
++ Processor: Relates the part that is responsible for analyzing and structuring the defined query based on the provided executor. By default the implemented processor is focused on the SQL language taking into account that it integrates with several database management systems. Like executives, they can be redefined by developers based on their needs.
+
++ Customize: refers to customizations of the library itself, generally when using LQL you must specify a compatible processor and executor for it to work, this process can be tedious by having to repeat it several times, instead it is customized the library for a specific processor and executor as its use may become more practical. Such is the case of the provided LQLS example which is nothing more than the native integration of LQL and Secretary as a data access layer.
+
+## How to use the LQL library
+
+### How load LQL library and configure it 
+En este caso se hará uso de la biblioteca denominada Carrier la cual abstrae al proceso de carga dinámica de bibliotecas basada en la definió de espacios de nombres y sus rutas de acceso. [for more information about Carrier library access this link](https://github.com/ameksike/ksike.elephant.carrier) 
 
 ```php
-
-	/*
-	 * Ejemplo de utilización 
-	 * */
-	 
-	//... paso 1: incluir el Loader y las funciones utilies (cfg|show)
+	//... step 1: include the loader and the utilities functions (cfg | show)
 	include __DIR__ . "/lib/carrier/src/Main.php";
 	include "lib/utils.php";
 	
-	//... paso 2: configurar el Loader especificandole las direcciones de las dependencias
+	//... step 2: configure the Loader specifying the addresses of the dependencies based on Ksike namespaces
 	Carrier::active(array( 'Ksike'=> __DIR__ .'/../' ));
 	
-	//... paso 3: los espacios de nombres a utilizar
+	//... step 3: define the namespaces to use
 	use Ksike\lql\src\server\Main as LQL;
 	use Ksike\lql\lib\processor\sql\src\Main as ProcessorSQL;
+	use Ksike\lql\lib\executor\secretary\src\Main as ExecutorSQL;
 	
-	//... paso 4: cargar las variables de configuracion 
+	//... step 4: load the configuration variables
 	$config['db']["log"]		= "log/";
-    $config['db']["driver"]	 	= "sqlite";				//... valores admitidos: pgsql|mysql|mysqli|sqlite|sqlsrv
-	$config['db']["name"]		= "ploy";		        //... nombre de la base de datos a la cual debe conectarse
-	$config['db']["path"]		= __DIR__ . "/data/";	//... ruta donde se encuentra la base de datos
-	$config['db']["extension"]  = "db";					//... default value db
+    $config['db']["driver"]	 	= "sqlite";				//... admitted values: pgsql|mysql|mysqli|sqlite|sqlsrv
+	$config['db']["name"]		= "ploy";		        //... name of the database to connect to
+	$config['db']["path"]		= __DIR__ . "/data/";	//... path where the database is located
+	$config['db']["extension"]  = "db";					//... default value for database extension
 
-	//... paso 5: comenzar a utilizar el LQL
-	/*
-	 * configurar el LQL de forma general para todas las consultas
-	 * */
-	LQL::setting(null, new ProcessorSQL);
-	/*
-	 * Creando una selección simple y obtener el sql
-	 * */
+	//... step 5: finally configure the LQL in a general way for all queries
+	LQL::setting(new ExecutorSQL(), new ProcessorSQL);
+```
+
+### Creating a simple item selection query
+```php
+
 	$sql = LQL::create()
 		->select('count(j.action) as data1, s.denomination as name')
         ->from('mod_pykota.jobhistory j')
 		->compile()
 	;
 	show($sql);
-	/*
-	 * Creando una selección simple y obtener el sql
-	 * */
+```
+Note that when using the compile function instead of flush or execute, you are being instructed to only return the value thrown by the processor, in this case the output would be SQL code
+
+
+### Creating a more complex item selection query including limits and nested subqueries
+```php
 	$sql = LQL::create()
 		->select('t.nombre as mio, t.edad as era')
 		->from(LQL::create()
@@ -53,74 +64,58 @@ generarador de consultas independiente de la capa de acceso a datos, su distribu
 		->compile()
 	;
 	show($sql);
-	/*
-	 * Ejecutando una consulta SQL  
-	 * */
-	show(LQLS::create()->execute('SELECT comando as cmd FROM cambios'));
-	/*
-	 * Ejecutando una consulta SQL almacenada en un archivo de texto
-	 * */
-	show(LQLS::create()->execute('data/select.sql'));
-	
-	
-	/*
-	 * utilidad denominada show utilizada para inspeccionar el comportamiento del código fuente
-	 * */
-	function show($obj, $dump=false){
-		echo "<pre>";
-		if($dump) var_dump($obj);
-		else print_r($obj);
-		echo "</pre>";
-	}
 ```
-	<b> ************************************************************ </b> 
-	<h3> LQL + Secretary = OK </h3>
-```php
-	/*
-	 * Ejemplo de utilización, equivalente a: LQL sobre Secretary
-	 * */
 
-	//... paso 1: incluir el Loader y las funciones utilies (cfg|show)
-	include "lib/loader/Main.php";
-	include "lib/utils.php";
+### How to run queries
+```php
+	//... run query specifying SQL in clear text
+	LQLS::create()->execute('SELECT comando as cmd FROM cambios');
 	
-	//... paso 2: los espacios de nombres a utilizar
-	use Loader\Main as Loader;
-	use LQL\src\LQLS as LQLS;
+	//... run query from external file in SQL format
+	LQLS::create()->execute('data/select.sql');
+```
+
+## How to use LQLS customization, it is equivalent to LQL over Secretary
+```php
+	//... step 1: include the loader 
+	include __DIR__ . "/lib/carrier/src/Main.php";
 	
-	//... paso 3: configurar el Loader especificandole las direcciones de las dependencias
-	Loader::active(array(
+	//... step 2: configure the Loader specifying the addresses of the dependencies based on LQL and Secretary namespaces
+	Carrier::active(array(
 		'Secretary'=>'lib/secretary',
 		'LQL'=>'lib/lql'
 	));
-	//... paso 4: cargar las variables de configuracion
-	$config["db"]["host"]		= "localhost";		    //... servidor o proveedor de bases de datos
-	$config["db"]["user"]		= "postgres";		    //... usuario de una cuenta activa en el servidor de bases de datos
-	$config["db"]["pass"]		= "postgres";			//... contraseña requerida para la cuenta activa en el servidor de bases de datos
-	$config["db"]["name"]		= "mydb";		        //... nombre de la base de datos a la cual debe conectarse
-    $config["db"]["driver"]		= "pgsql";				//... pgsql|mysql|sqlite|sqlsrv|mysqli
+	
+	///... step 3: define the namespaces to use
+	use LQL\src\LQLS as LQLS;
 
-	//... paso 5: comenzar a utilizar el LQLS
-	/*
-	 * Creando una selección simple y obtener el sql
-	 * */
+	//... step 4: load the configuration variables
+	$config['db']["log"]		= "log/";
+    $config['db']["driver"]	 	= "sqlite";	
+	$config['db']["name"]		= "ploy";
+	$config['db']["path"]		= __DIR__ . "/data/";	
+	$config['db']["extension"]  = "db";	
+```
+### Creating a simple selection and get the SQL as output
+```php
 	$sql = LQLS::create($config['db'])
 		->select('name as nombre, age as edad, serverid')
 		->from('person', 'p')
 		->compile()
 	;
 	show($sql);
-	/*
-	 * Creando una selección simple y obtener el resultado
-	 * */
+```
+
+### Other practical examples of table queries
+```php
+	//... simple query name, age and serverid using aliases
 	$sql = LQLS::create($config['db'])
 		->select('name as nombre, age as edad, serverid')
 		->from('person', 'p')
 		->execute()
 	;
-	/*
-	 * Creando una selección compuesta sobre la tabla person
-	 * */
+
+	//... Creating a compound selection on the person table
 	$sql = LQLS::create($config['db'])
 		->select('t.nombre as mio, t.edad as era')
 		->from(LQLS::create($config['db'])
@@ -131,69 +126,57 @@ generarador de consultas independiente de la capa de acceso a datos, su distribu
 		->offset(1)
 		->execute()
 	;
-	show($sql);
-	/*
-	 * Creando un update simple
-	 * */
+	
+	//... Creating a simple update
 	$sql = LQLS::create($config['db'])
 		->update('person')
 		->set('age', 15)
 		->compile()
 	;
-	/*
-	 * Creando un update de multiples atributos y con condiciones
-	 * */
+	
+	//... Creating an update with multiple attributes and with conditions
 	$sql = LQLS::create()
 		->update('person')
 		->set(['age', 'name'], [30, 'Aqui actualice'])
 		->where('id', '3')
 		->execute()
 	;
-	show($sql, true);
-	/*
-	 * Creando un insert simple
-	 * */
+	
+	//... Creating a simple insert
 	$sql = LQLS::create($config['db'])
 		->insert('person')
 		->into('name', 'age', 'id')
 		->values('Maria Tusa', 12, 24)
 		->compile()
 	;
-	//show($sql, true);
-	/*
-	 * Creando un insert compuesto
-	 * */
+
+	//... Creating a composite insert
 	$sql = LQLS::create($config['db'])
 		->insert('person')
 		->into('name', 'age', 'id')
 		->values('Maria Mria', 12, LQLS::create($config['db'])->select('SUM(id) as cant')->from('person'))
 		->compile()
 	;
-	show($sql, true);
-	/*
-	 * Creando una consulta de eliminacion con condiciones
-	 * */
+
+	//... Creating a delete query with conditions
 	$sql = LQLS::create($config['db'])
 		->delete('person')
 		->where('id', 2)
 		->persist()
 	;
-	show($sql, true);
-	/*
-	 * Creando una consulta para eliminar la tabla cambios
-	 * */
+
+	//... Creating a query to delete the changes table
 	$sql = LQLS::create($config['db'])
 		->drop('tieso')
 		->execute()
 	;
-	echo "drop: "; var_dump($sql);
-	/*
-	 * Configurando el LQLS de forma general para todas las consultas
-	 * */
+```
+
+### How to configure LQLS in a general way for all queries
+```php
 	LQLS::setting($config['db']);
-	/*
-	 * Creando una consulta compuesta, simulando un flush de Doctrine 2.0
-	 * */
+	
+	//... Creating a compound query, simulating a Doctrine 2.0 flush
 	$sql = LQLS::create()
 		->add(LQLS::create()
 			->insert('person')
@@ -218,10 +201,10 @@ generarador de consultas independiente de la capa de acceso a datos, su distribu
 		)
 		->flush()
 	;
-	show($sql);
-	/*
-	 * Creando una consulta compuesta
-	 * */
+```
+
+### How to create complex queries using relations between join tables
+```php
 	$sql = LQLS::create()
 		->select("
 					u.serverid,
