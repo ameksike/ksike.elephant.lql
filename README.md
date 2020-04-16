@@ -12,7 +12,7 @@ LQL also know as Light Query Language it is a query generator independent of dat
 ## How to use the LQL library
 
 ### How load LQL library and configure it 
-En este caso se hará uso de la biblioteca denominada Carrier la cual abstrae al proceso de carga dinámica de bibliotecas basada en la definió de espacios de nombres y sus rutas de acceso. [for more information about Carrier library access this link](https://github.com/ameksike/ksike.elephant.carrier) 
+In this case, the resource called Carrier is used, which abstracts the developers from the process of loading the required library into memory, through the association of routes with namespaces. [for more information about Carrier library access this link](https://github.com/ameksike/ksike.elephant.carrier) 
 
 ```php
 //... step 1: include the loader and the utilities functions (cfg | show)
