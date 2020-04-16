@@ -203,11 +203,11 @@ $sql = LQLS::create()
 ```php
 $sql = LQLS::create()
 	->select("
-				u.serverid,
-				u.id as uid,
-				count(j.id) as work,
-				sum(jobsize) as page
-			")
+		u.serverid,
+		u.id as uid,
+		count(j.id) as work,
+		sum(jobsize) as page
+	")
 	->addSelect("u.fname", 'table')
 	->addSelect(LQLS::create()
 		->select("count(j1.fid)")
