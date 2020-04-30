@@ -1,6 +1,7 @@
 # LQL Elephant
 LQL also know as Light Query Language it is a query generator independent of data access layer, it belong  Ksike Framework Elephant distribution, oriented to the PHP programing language. Note that in general a query languages or data query languages (DQLs) are computer languages used to make queries in databases and information systems. 
 
+![Screenshot](README/lql-full.svg)
 
 ## LQL consists of three fundamental concepts, which are listed below:
 + Executor: Relates the execute part that establishes the persistence of the data and defines how it is accessed. Due to the proposed plugin architecture, as many executors can be defined as necessary, by default one is defined using the Secretary library. [for more information about Secretary library access this link](https://github.com/ameksike/ksike.elephant.secretary) 
